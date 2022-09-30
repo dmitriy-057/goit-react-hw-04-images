@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import fetchImage from '../utils/fetchImage';
@@ -8,95 +8,72 @@ import Modal from './Modal/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export class App extends Component {
-  state = {
-    page: 1,
-    nameImage: '',
-    fetchedImage: [],
-    loading: false,
-    showModal: false,
-    largeImgUrl: '',
-  };
-
-  componentDidUpdate(_, prevState) {
-    const { page, nameImage } = this.state;
-    const { notify } = this;
-    if (
-      nameImage &&
-      (nameImage !== prevState.nameImage || prevState.page !== page)
-    ) {
-      this.setState({ loading: true });
-      fetchImage(nameImage, page)
-        .then(({ data: { hits, totalHits } }) => {
-          this.setState(prevState => ({
-            fetchedImage: [...prevState.fetchedImage, ...hits],
-            totalHits,
-          }));
-          console.log('hits', hits);
-          if (!hits.length) {
-            notify();
-          }
-        })
-        .catch(error => console.log(error))
-        .finally(() => {
-          this.setState({ loading: false });
-        });
+export function App() {
+  const [page, setPage] = useState(1);
+  const [nameImage, setNameImage] = useState('');
+  const [fetchedImage, setFetchedImage] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [largeImgUrl, setLargeImgUrl] = useState('');
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    if (!nameImage) {
+      return;
     }
-  }
-
-  formSubmitHandler = newNameImage => {
-    const { nameImage } = this.state;
-
-    if (newNameImage !== nameImage) {
-      this.setState({
-        page: 1,
-        nameImage: newNameImage,
-        fetchedImage: [],
+    setLoading(true);
+    console.log(nameImage);
+    fetchImage(nameImage, page)
+      .then(({ data: { hits, totalHits } }) => {
+        setFetchedImage(prev => [...prev, ...hits]);
+        setTotal(totalHits);
+        if (!hits.length) {
+          notify();
+        }
+      })
+      .catch(error => console.log(error))
+      .finally(() => {
+        setLoading(false);
       });
-    }
-  };
+  }, [nameImage, page]);
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+  const formSubmitHandler = newNameImage => {
+    setPage(1);
+    setNameImage(newNameImage);
+    setFetchedImage([]);
   };
-  togleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  const loadMore = () => {
+    setPage(page => page + 1);
   };
-  takeLargeImgUrl = newUrl => {
-    this.setState({ largeImgUrl: newUrl });
+  const togleModal = () => {
+    setShowModal(showModal => !showModal);
   };
-  notify = () => toast('Not Found Image');
-  render() {
-    const { formSubmitHandler, loadMore, togleModal, takeLargeImgUrl } = this;
-    const { fetchedImage, loading, showModal, largeImgUrl, totalHits } =
-      this.state;
-    return (
-      <>
-        <Searchbar onSubmit={formSubmitHandler} />
-        <ImageGallery
-          fetchedImage={fetchedImage}
-          togleModal={togleModal}
-          takeLargeImgUrl={takeLargeImgUrl}
-        />
-        {fetchedImage.length !== 0 && fetchedImage.length < totalHits && (
-          <Button loadMore={loadMore} />
-        )}
-        {loading && (
-          <Modal>
-            <Loader />
-          </Modal>
-        )}
-        {showModal && (
-          <Modal onClose={togleModal}>
-            <img src={largeImgUrl} alt="" />
-          </Modal>
-        )}
-        <ToastContainer />
-      </>
-    );
-  }
+  const takeLargeImgUrl = newUrl => {
+    setLargeImgUrl(newUrl);
+  };
+  const notify = () => toast('Not Found Image');
+
+  return (
+    <>
+      <Searchbar onSubmit={formSubmitHandler} />
+      <ImageGallery
+        fetchedImage={fetchedImage}
+        togleModal={togleModal}
+        takeLargeImgUrl={takeLargeImgUrl}
+      />
+      {fetchedImage.length !== 0 && fetchedImage.length < total && (
+        <Button loadMore={loadMore} />
+      )}
+      {loading && (
+        <Modal>
+          <Loader />
+        </Modal>
+      )}
+      {showModal && (
+        <Modal onClose={togleModal}>
+          <img src={largeImgUrl} alt="" />
+        </Modal>
+      )}
+      <ToastContainer />
+    </>
+  );
 }

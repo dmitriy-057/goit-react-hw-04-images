@@ -1,4 +1,5 @@
 import ImageGalleryItem from 'components/ImageGalleryItem';
+
 import { Gallery } from './ImageGallery.styled';
 
 export default function ImageGallery({
@@ -8,15 +9,17 @@ export default function ImageGallery({
 }) {
   return (
     <Gallery>
-      {fetchedImage.map(({ id, webformatURL, largeImageURL }, index) => (
-        <ImageGalleryItem
-          takeLargeImgUrl={takeLargeImgUrl}
-          togleModal={togleModal}
-          key={id + index}
-          webformatURL={webformatURL}
-          largeImageURL={largeImageURL}
-        />
-      ))}
+      {fetchedImage
+        // .filter((elem, index, array) => elem.id !== array[index])
+        .map(({ id, webformatURL, largeImageURL }, index) => (
+          <ImageGalleryItem
+            takeLargeImgUrl={takeLargeImgUrl}
+            togleModal={togleModal}
+            key={id * 10 + index}
+            webformatURL={webformatURL}
+            largeImageURL={largeImageURL}
+          />
+        ))}
     </Gallery>
   );
 }
