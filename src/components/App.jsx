@@ -21,7 +21,6 @@ export function App() {
       return;
     }
     setLoading(true);
-    console.log(nameImage);
     fetchImage(nameImage, page)
       .then(({ data: { hits, totalHits } }) => {
         setFetchedImage(prev => [...prev, ...hits]);

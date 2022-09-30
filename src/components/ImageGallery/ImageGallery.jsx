@@ -15,7 +15,7 @@ export default function ImageGallery({
           <ImageGalleryItem
             takeLargeImgUrl={takeLargeImgUrl}
             togleModal={togleModal}
-            key={id * 10 + index}
+            key={id * 5 + index}
             webformatURL={webformatURL}
             largeImageURL={largeImageURL}
           />
