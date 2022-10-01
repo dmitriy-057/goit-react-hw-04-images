@@ -1,4 +1,5 @@
 import { Formik, ErrorMessage } from 'formik';
+import PropTypes from 'prop-types';
 import {
   SearchbarSection,
   SearchForm,
@@ -44,3 +45,5 @@ export default function Searchbar({ onSubmit }) {
     </SearchbarSection>
   );
 }
+
+Searchbar.propTypes = { onSubmit: PropTypes.func };
