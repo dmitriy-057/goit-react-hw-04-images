@@ -1,18 +1,17 @@
-import { Formik, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import {
   SearchbarSection,
   SearchForm,
   SearchFormButton,
   SearchFormInput,
-  ErrorText,
 } from './Searchbar.styled';
 import * as yup from 'yup';
 
 import { MdFindReplace } from 'react-icons/md';
 
 const SearchSchema = yup.object().shape({
-  searchbar: yup.string().trim().required('Enter valid name'),
+  searchbar: yup.string().trim(),
 });
 
 export default function Searchbar({ onSubmit }) {
@@ -39,7 +38,7 @@ export default function Searchbar({ onSubmit }) {
             autoFocus
             placeholder="Search images and photos"
           />
-          <ErrorMessage name="searchbar" component={ErrorText} />
+          {/* <ErrorMessage name="searchbar" component={ErrorText} /> */}
         </SearchForm>
       </Formik>
     </SearchbarSection>
