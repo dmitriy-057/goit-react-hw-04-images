@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { GalleryItem, GalleryItemImage } from './ImageGalleryItem.styled';
 
 const ImageGalleryItem = ({
@@ -18,3 +19,10 @@ const ImageGalleryItem = ({
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  webformatURL: PropTypes.string,
+  largeImageURL: PropTypes.string,
+  togleModal: PropTypes.func,
+  takeLargeImgUrl: PropTypes.func,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 
 import { Gallery } from './ImageGallery.styled';
@@ -23,3 +24,8 @@ export default function ImageGallery({
     </Gallery>
   );
 }
+ImageGallery.propTypes = {
+  fetchedImage: PropTypes.array.isRequired,
+  togleModal: PropTypes.func,
+  takeLargeImgUrl: PropTypes.func,
+};

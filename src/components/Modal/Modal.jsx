@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Overlay, ModalStyled } from './Modal.styled';
+import PropTypes from 'prop-types';
 const modalRoot = document.querySelector('#modal-root');
 export default function Modal(props) {
   const { onClose } = props;
@@ -23,3 +24,4 @@ export default function Modal(props) {
     modalRoot
   );
 }
+Modal.propTypes = { onClose: PropTypes.func };
