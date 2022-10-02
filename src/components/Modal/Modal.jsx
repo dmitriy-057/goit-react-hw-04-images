@@ -9,12 +9,6 @@ export default function Modal({ onClose, children }) {
       onClose();
     }
   };
-  const handleClickModal = e => {
-    const { target, currentTarget } = e;
-    if (currentTarget === target) {
-      onClose();
-    }
-  };
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
@@ -23,7 +17,7 @@ export default function Modal({ onClose, children }) {
   });
 
   return createPortal(
-    <Overlay onClick={handleClickModal}>
+    <Overlay onClick={onClose}>
       <ModalStyled>{children}</ModalStyled>
     </Overlay>,
     modalRoot
