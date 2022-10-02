@@ -5,6 +5,7 @@ import fetchImage from '../utils/fetchImage';
 import Button from './Button';
 import Loader from './Loader';
 import Modal from './Modal/Modal';
+import ImgModal from './ImgModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,21 +18,22 @@ export function App() {
   const [largeImgUrl, setLargeImgUrl] = useState('');
   const [total, setTotal] = useState(0);
   useEffect(() => {
-    if (nameImage) {
-      setLoading(true);
-      fetchImage(nameImage, page)
-        .then(({ data: { hits, totalHits } }) => {
-          setFetchedImage(prev => [...prev, ...hits]);
-          setTotal(totalHits);
-          if (!hits.length) {
-            notify();
-          }
-        })
-        .catch(error => console.log(error))
-        .finally(() => {
-          setLoading(false);
-        });
+    if (!nameImage) {
+      return;
     }
+    setLoading(true);
+    fetchImage(nameImage, page)
+      .then(({ data: { hits, totalHits } }) => {
+        setFetchedImage(prev => [...prev, ...hits]);
+        setTotal(totalHits);
+        if (!hits.length) {
+          notify();
+        }
+      })
+      .catch(error => console.log(error))
+      .finally(() => {
+        setLoading(false);
+      });
   }, [nameImage, page]);
 
   const formSubmitHandler = newNameImage => {
@@ -68,7 +70,7 @@ export function App() {
       )}
       {showModal && (
         <Modal onClose={togleModal}>
-          <img src={largeImgUrl} alt="" />
+          <ImgModal src={largeImgUrl} alt="" />
         </Modal>
       )}
       <ToastContainer />
