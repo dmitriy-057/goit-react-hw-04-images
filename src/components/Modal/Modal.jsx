@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Overlay, ModalStyled } from './Modal.styled';
 import PropTypes from 'prop-types';
 const modalRoot = document.querySelector('#modal-root');
-export default function Modal({ onClose, children, onClick }) {
+export default function Modal({ onClose, children }) {
   const handleKeyDown = e => {
     if (e.code === 'Escape') {
       onClose();

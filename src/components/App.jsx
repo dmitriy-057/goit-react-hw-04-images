@@ -51,11 +51,6 @@ export function App() {
     setLargeImgUrl(newUrl);
   };
   const notify = () => toast('Not Found Image');
-  // const handleClickModal = e => {
-  //   onClose();
-  //   // console.log(e);
-  // };
-
   return (
     <>
       <Searchbar onSubmit={formSubmitHandler} />
