@@ -17,22 +17,21 @@ export function App() {
   const [largeImgUrl, setLargeImgUrl] = useState('');
   const [total, setTotal] = useState(0);
   useEffect(() => {
-    if (!nameImage) {
-      return;
+    if (nameImage) {
+      setLoading(true);
+      fetchImage(nameImage, page)
+        .then(({ data: { hits, totalHits } }) => {
+          setFetchedImage(prev => [...prev, ...hits]);
+          setTotal(totalHits);
+          if (!hits.length) {
+            notify();
+          }
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+          setLoading(false);
+        });
     }
-    setLoading(true);
-    fetchImage(nameImage, page)
-      .then(({ data: { hits, totalHits } }) => {
-        setFetchedImage(prev => [...prev, ...hits]);
-        setTotal(totalHits);
-        if (!hits.length) {
-          notify();
-        }
-      })
-      .catch(error => console.log(error))
-      .finally(() => {
-        setLoading(false);
-      });
   }, [nameImage, page]);
 
   const formSubmitHandler = newNameImage => {
