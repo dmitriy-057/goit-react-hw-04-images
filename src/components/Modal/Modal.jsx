@@ -3,9 +3,15 @@ import { createPortal } from 'react-dom';
 import { Overlay, ModalStyled } from './Modal.styled';
 import PropTypes from 'prop-types';
 const modalRoot = document.querySelector('#modal-root');
-export default function Modal({ onClose, children }) {
+export default function Modal({ onClose, children, onClick }) {
   const handleKeyDown = e => {
     if (e.code === 'Escape') {
+      onClose();
+    }
+  };
+  const handleClickModal = e => {
+    const { target, currentTarget } = e;
+    if (currentTarget === target) {
       onClose();
     }
   };
@@ -17,7 +23,7 @@ export default function Modal({ onClose, children }) {
   });
 
   return createPortal(
-    <Overlay>
+    <Overlay onClick={handleClickModal}>
       <ModalStyled>{children}</ModalStyled>
     </Overlay>,
     modalRoot
