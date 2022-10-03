@@ -11,12 +11,12 @@ import * as yup from 'yup';
 import { MdFindReplace } from 'react-icons/md';
 
 const SearchSchema = yup.object().shape({
-  searchbar: yup.string().trim(),
+  searchbar: yup.string(),
 });
 
 export default function Searchbar({ onSubmit }) {
   const handleSabmit = ({ searchbar }, { resetForm }) => {
-    onSubmit(searchbar);
+    onSubmit(searchbar.trim());
     resetForm();
   };
 
